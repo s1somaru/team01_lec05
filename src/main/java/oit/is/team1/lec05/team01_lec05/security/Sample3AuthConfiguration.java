@@ -2,14 +2,36 @@ package oit.is.team1.lec05.team01_lec05.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class Sample3AuthConfiguration {
+
+  /**
+   * 認可処理に関する設定（認証されたユーザがどこにアクセスできるか）
+   *
+   * @param http
+   * @return
+   * @throws Exception
+   */
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.formLogin(login -> login
+        .permitAll())
+        .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/")) // ログアウト後に / にリダイレクト
+        .authorizeHttpRequests(authz -> authz
+            .requestMatchers("/sample5/**").authenticated() // /sample5/以下は認証済みであること
+            .anyRequest().permitAll()); // 上記以外は全員アクセス可能
+    return http.build();
+  }
 
   /**
    * 認証処理に関する設定（誰がどのようなロールでログインできるか）
