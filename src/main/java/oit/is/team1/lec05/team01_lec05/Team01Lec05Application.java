@@ -2,7 +2,9 @@ package oit.is.team1.lec05.team01_lec05;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
+@EnableAsync
 @SpringBootApplication
 public class Team01Lec05Application {
 
